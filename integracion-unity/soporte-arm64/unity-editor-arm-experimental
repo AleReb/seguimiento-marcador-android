@@ -1,0 +1,6 @@
+#!/bin/bash
+if pgrep -u "$(id -u)" -f '^/home/ale/Unity/Hub/Editor/6000\.3\.28f1/Editor/Unity' >/dev/null; then
+    command -v notify-send >/dev/null && notify-send 'Unity ya está abierto' 'Cierra la ventana de Unity antes de abrir la versión corregida.'
+    exit 1
+fi
+exec pkexec /home/ale/.local/share/unity-fex-fixes/abrir-unity-corregido.sh

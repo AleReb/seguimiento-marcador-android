@@ -9,3 +9,10 @@ build/
 [Oo]bj/
 [Ll]ogs/
 UserSettings/
+# Archivos regenerados por Unity y Gradle
+.kotlin/
+*.csproj
+*.sln
+*.slnx
+.vscode/
+integracion-unity/CuboMarcador/

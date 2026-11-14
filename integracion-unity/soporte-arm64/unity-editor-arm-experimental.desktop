@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Unity Editor (ARM experimental)
+Comment=Unity Editor mediante FEX
+Exec=/home/ale/.local/bin/unity-editor-arm-experimental
+Icon=applications-development
+Terminal=false
+Categories=Development;IDE;
