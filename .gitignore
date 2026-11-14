@@ -1,0 +1,11 @@
+.gradle/
+.idea/
+local.properties
+build/
+**/build/
+*.iml
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+UserSettings/
