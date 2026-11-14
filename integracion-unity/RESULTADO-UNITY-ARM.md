@@ -11,3 +11,7 @@ La prueba solo demuestra compilación e importación en modo sin interfaz: falta
 ## Acceso experimental
 
 El acceso del menú «Unity Editor (ARM experimental)» ahora inicia `CuboMinimo` con el compilador ARM probado. Requiere autenticación de administrador para habilitar temporalmente la política de memoria; al cerrar el editor, el lanzador intenta restaurar el ejecutable original y la política anterior. No se debe iniciar una segunda instancia al mismo tiempo. Si el proceso se termina de manera forzada, comprobar la restauración antes de iniciar de nuevo.
+
+## Posible aplicación a Fusion 360
+
+En la prueba con Unity, Linux rechazó reservas grandes de memoria virtual aunque quedara RAM disponible; al usar temporalmente `vm.overcommit_memory=1` el compilador pudo iniciarse. **Hipótesis para investigar:** si Fusion 360 bajo Wine y emulación muestra un error similar al reservar memoria virtual, podría estudiarse una prueba controlada con esta política. No se ha probado ni demostrado que resuelva Fusion 360; el ajuste es global y se debe restaurar tras la prueba. El cambio de compilador Roslyn usado para Unity es específico de Unity y no se debe asumir aplicable a Fusion 360. Fusion ya dispone de un lanzador experimental con un mecanismo distinto: `Iniciar-Fusion360-memoria.sh`.
