@@ -32,6 +32,8 @@ La página estática se encuentra en [docs/index.html](docs/index.html). Para us
 
 ## Hojas en tamaño Carta
 
+También puedes crear marcadores con el [generador ArUco en línea](https://chev.me/arucogen/): elige el diccionario **4×4 (50 marcadores)** (`DICT_4X4_50`), el ID deseado y **20 mm** para un marcador de 2 cm o **50 mm** para uno de 5 cm. Permite guardar SVG o imprimir/guardar PDF desde el navegador. Imprime al 100 %, conserva un margen blanco y comprueba con una regla el lado negro exterior; selecciona ese mismo tamaño en la app.
+
 Imprimir al **100 %**, sin ajustar a página. Comprobar con regla la línea de 100 mm.
 
 - [Tablero ChArUco de calibración](docs/calibracion/hoja-charuco-carta.pdf).
