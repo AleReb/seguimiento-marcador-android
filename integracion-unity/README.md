@@ -9,3 +9,7 @@ Los datos se envían sin cifrar ni autenticación por la red local. Solo habilit
 El editor instalado para este equipo ARM funciona experimentalmente bajo FEX; Unity advierte que la compilación de C# puede fallar. Este archivo aún necesita probarse en una sesión de Unity con licencia activa y en el teléfono.
 
 La versión Android 0.2 permite variar el lado del cubo de 1 a 20 cm y envía `cubeSizeCm` como campo opcional del JSON versión 1. El receptor actualizado lo convierte a una escala relativa: 5 cm mantiene las 0,7 unidades originales; no representa tamaño físico de pantalla. Los receptores anteriores ignoran el campo.
+
+## Nueva versión con mayor profundidad
+
+[CuboProfundidadV2](CuboProfundidadV2/README.md) mantiene el demo anterior y añade ganancia Z ×12 ajustable de ×1 a ×40, rejilla, cámara con seguimiento parcial y suavizado. Usa el mismo APK 0.3. Abrir el proyecto V2 por el lanzador ARM y consultar sus controles antes de entrar en Play.

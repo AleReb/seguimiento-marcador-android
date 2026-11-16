@@ -44,3 +44,7 @@ Imprimir al **100 %**, sin ajustar a página. Comprobar con regla la línea de 1
 Los cubos son plantillas para recortar y armar; sus caras no incluyen marcadores. Un ArUco de 2 cm necesita margen blanco, por lo que no cabe con ese margen en una cara de cubo de exactamente 2 cm. Puede pegarse en una cara de 5 cm o mantenerse en una superficie plana independiente. La calibración mediante ChArUco sigue siendo una propuesta; su asistente no está implementado.
 
 Consulta las [notas de la versión 0.3](docs/version-0.3.md).
+
+## Demo Unity de profundidad V2
+
+El proyecto independiente [CuboProfundidadV2](integracion-unity/CuboProfundidadV2/README.md) amplifica más el desplazamiento en Z y permite ajustar su ganancia. El demo `CuboMinimo` se conserva. No hace falta otro APK: usa la versión Android 0.3 y el mismo puerto UDP 5005.
