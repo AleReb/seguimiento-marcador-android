@@ -11,8 +11,8 @@ android {
         applicationId = "cl.seguimientomarcador.demo"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 3
+        versionName = "0.3"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

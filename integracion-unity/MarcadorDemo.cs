@@ -11,6 +11,7 @@ public sealed class MarcadorDemo : MonoBehaviour
     [Serializable] private sealed class Pose
     {
         public int version;
+        public float cubeSizeCm;
         public bool tracked;
         public int id;
         public float x, y, z;
@@ -86,6 +87,8 @@ public sealed class MarcadorDemo : MonoBehaviour
                 var pose = JsonUtility.FromJson<Pose>(message);
                 if (pose != null && pose.version == 1 && pose.tracked && pose.rotation != null && pose.rotation.Length == 9 &&
                     Finite(pose.x) && Finite(pose.y) && Finite(pose.z) && Array.TrueForAll(pose.rotation, Finite)) {
+                    if (Finite(pose.cubeSizeCm) && pose.cubeSizeCm >= 1f && pose.cubeSizeCm <= 20f)
+                        cube.transform.localScale = Vector3.one * (0.7f * pose.cubeSizeCm / 5f);
                     var r = pose.rotation;
                     var position = new Vector3(pose.x, -pose.y, pose.z) * 0.01f;
                     // Cambio de base de OpenCV (Y abajo) a Unity (Y arriba).

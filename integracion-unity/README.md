@@ -7,3 +7,5 @@ En la aplicación Android, conectada a la misma Wi-Fi, introducir la dirección 
 Los datos se envían sin cifrar ni autenticación por la red local. Solo habilita el envío en una red de confianza. El cálculo usa una cámara sin calibrar, por lo que la posición y orientación son estimaciones; los ejes corresponden al sensor de la cámara y podrían no coincidir con la orientación visual del teléfono. El cambio de cámara puede cambiar la referencia: pulsa R para fijar de nuevo el origen.
 
 El editor instalado para este equipo ARM funciona experimentalmente bajo FEX; Unity advierte que la compilación de C# puede fallar. Este archivo aún necesita probarse en una sesión de Unity con licencia activa y en el teléfono.
+
+La versión Android 0.2 permite variar el lado del cubo de 1 a 20 cm y envía `cubeSizeCm` como campo opcional del JSON versión 1. El receptor actualizado lo convierte a una escala relativa: 5 cm mantiene las 0,7 unidades originales; no representa tamaño físico de pantalla. Los receptores anteriores ignoran el campo.
