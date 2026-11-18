@@ -10,4 +10,4 @@ APK: [demo-marcador-v0.3.apk](../apk/demo-marcador-v0.3.apk). Se conserva el APK
 
 El APK tiene `versionCode=3`, `versionName=0.3` y usa la misma identidad de aplicación. Es una compilación debug; se puede instalar como actualización de la anterior si comparte firma. La app anterior no se mantiene instalada en paralelo. Para volver a una versión con código inferior Android puede requerir desinstalar primero, lo que elimina las preferencias.
 
-La compilación se verifica con Gradle `assembleDebug`; las cámaras, la proyección, la estabilidad y el envío de tamaño a Unity requieren prueba en el teléfono. No se ha implementado aún el asistente de calibración; los parámetros ópticos siguen siendo aproximados.
+La compilación se verifica con `gradle -p android assembleDebug` desde la raíz del repositorio; las cámaras, la proyección, la estabilidad y el envío de tamaño a Unity requieren prueba en el teléfono. No se ha implementado aún el asistente de calibración; los parámetros ópticos siguen siendo aproximados.

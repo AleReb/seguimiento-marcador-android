@@ -4,7 +4,7 @@ Proyecto para detectar un marcador ArUco, estimar su posición y orientación re
 
 ## Qué hay disponible
 
-- **Android:** la aplicación en `app/` muestra la cámara, detecta marcadores `DICT_4X4_50` y estima posición, distancia y orientación a partir de un marcador de 2 o 5 cm (seleccionable). Permite cambiar entre cámaras, proyectar un cubo sobre el marcador, variar su tamaño (1–20 cm) y enviar la pose y tamaño por UDP a Unity. El seguimiento añade refinamiento subpíxel, suavizado de esquinas y selección estable del ID visible.
+- **Android:** la aplicación en `android/app/` muestra la cámara, detecta marcadores `DICT_4X4_50` y estima posición, distancia y orientación a partir de un marcador de 2 o 5 cm (seleccionable). Permite cambiar entre cámaras, proyectar un cubo sobre el marcador, variar su tamaño (1–20 cm) y enviar la pose y tamaño por UDP a Unity. El seguimiento añade refinamiento subpíxel, suavizado de esquinas y selección estable del ID visible.
 - **Web:** la demo en [docs/index.html](docs/index.html) detecta marcadores ArUco 4×4, muestra una pose aproximada, permite cambiar de cámara y guardar mediciones en CSV.
 - **Unity:** el componente [MarcadorDemo.cs](integracion-unity/MarcadorDemo.cs) recibe las poses UDP en el puerto 5005 y mueve un cubo. También se incluye el proyecto mínimo `integracion-unity/CuboMinimo/`.
 - **APK:** [demo-marcador-udp.apk](apk/demo-marcador-udp.apk), almacenado mediante Git LFS.

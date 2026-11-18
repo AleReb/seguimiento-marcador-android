@@ -6,8 +6,8 @@ El seguimiento refina las esquinas a precisión subpíxel y suaviza sus coordena
 
 ## Probar
 
-1. Compilar con JDK 17, Android SDK 35 y Gradle 8.9: `gradle assembleDebug`. El repositorio no incluye Gradle Wrapper.
-2. Instalar el APK generado en `app/build/outputs/apk/debug/app-debug.apk`, abrir la app y aceptar la cámara.
+1. Abrir la carpeta `android/` en Android Studio o ejecutar `gradle -p android assembleDebug` desde la raíz del repositorio con JDK 17, Android SDK 35 y Gradle 8.9. El repositorio no incluye Gradle Wrapper.
+2. Instalar el APK generado en `android/app/build/outputs/apk/debug/app-debug.apk`, abrir la app y aceptar la cámara.
 3. Elegir 2 o 5 cm según el lado negro exterior impreso (sin margen blanco). Apuntar al marcador bien iluminado y comprobar que el cubo sigue las cuatro esquinas. Girar el teléfono y cambiar entre cámara frontal/trasera para comprobar el giro y espejo de la vista.
 4. Variar el tamaño entre 1 y 20 cm. Comprobar el tamaño tras reiniciar la app. El cubo se oculta cuando no hay una pose válida y reaparece cuando se detecta nuevamente.
 5. Para Unity, introducir la IP Wi-Fi **actual** del computador, pulsar «Enviar a Unity» y ejecutar el proyecto con el receptor actualizado en Play. Ambos dispositivos deben estar en una red que permita comunicación entre clientes. Se envían poses a UDP 5005 a un máximo de 20 Hz; no hay confirmación de entrega.
