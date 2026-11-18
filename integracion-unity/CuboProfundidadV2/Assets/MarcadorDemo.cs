@@ -31,12 +31,13 @@ public sealed class MarcadorDemo : MonoBehaviour
     private float lastPoseTime;
     [Header("Demo de profundidad V2")]
     [Range(1f, 40f)] public float depthGain = 12f;
-    [Range(1f, 10f)] public float lateralGain = 3f;
+    [Range(1f, 10f)] public float lateralGain = 8f;
     public bool followDepth = true;
     private Camera demoCamera;
     private Vector3 targetPosition;
     private Quaternion targetRotation = Quaternion.identity;
-    private float measuredDepthCm;
+    private Vector3 measuredOffsetCm;
+    private static readonly Vector3 CameraOffset = new Vector3(4f, 3f, -9f);
     private bool resetRequested;
     private Material guideMaterial;
 
@@ -54,8 +55,9 @@ public sealed class MarcadorDemo : MonoBehaviour
         demoCamera = cam;
         cam.nearClipPlane = 0.05f;
         cam.farClipPlane = 500f;
-        cam.fieldOfView = 55f;
-        cam.transform.position = new Vector3(7, 5, -14);
+        cam.orthographic = true;
+        cam.orthographicSize = 3.4f;
+        cam.transform.position = CameraOffset;
         cam.transform.LookAt(Vector3.zero);
         cam.backgroundColor = new Color(.05f, .11f, .15f);
         cam.clearFlags = CameraClearFlags.SolidColor;
@@ -102,6 +104,7 @@ public sealed class MarcadorDemo : MonoBehaviour
         if (resetRequested) {
             hasOrigin = false; markerId = -1; targetPosition = Vector3.zero;
             cube.transform.position = Vector3.zero;
+            measuredOffsetCm = Vector3.zero;
             resetRequested = false;
         }
         // Teclado como alternativa hasta recibir datos del marcador.
@@ -124,7 +127,7 @@ public sealed class MarcadorDemo : MonoBehaviour
                     var rotation = Quaternion.LookRotation(forward, up);
                     if (!hasOrigin || markerId != pose.id) { origin = position; originRotation = rotation; markerId = pose.id; hasOrigin = true; }
                     var delta = position - origin;
-                    measuredDepthCm = delta.z * 100f;
+                    measuredOffsetCm = delta * 100f;
                     targetPosition = new Vector3(delta.x * lateralGain, delta.y * lateralGain, delta.z * depthGain);
                     targetRotation = rotation * Quaternion.Inverse(originRotation);
                     cube.SetActive(true);
@@ -139,12 +142,11 @@ public sealed class MarcadorDemo : MonoBehaviour
             cube.transform.rotation = Quaternion.Slerp(cube.transform.rotation, targetRotation, blend);
         }
         if (demoCamera != null) {
-            float z = followDepth ? cube.transform.position.z : 0f;
-            // Follow more closely on approach, keeping the camera behind the cube.
-            float follow = z < 0 ? z : z * 0.35f;
+            float z = cube.transform.position.z;
+            // Keep the origin stationary across small movements in all three axes.
+            float follow = followDepth ? z - Mathf.Clamp(z, -3f, 3f) : 0f;
             demoCamera.transform.position = Vector3.Lerp(demoCamera.transform.position,
-                new Vector3(7, 5, -14 + follow), 1f - Mathf.Exp(-5f * Time.unscaledDeltaTime));
-            demoCamera.transform.LookAt(new Vector3(0, 0, follow + 2));
+                CameraOffset + Vector3.forward * follow, 1f - Mathf.Exp(-5f * Time.unscaledDeltaTime));
         }
     }
 
@@ -168,7 +170,7 @@ public sealed class MarcadorDemo : MonoBehaviour
         cube.transform.Rotate(Vector3.up, turn * 90f * Time.deltaTime, Space.World);
     }
 
-    public float MeasuredDepthCm => measuredDepthCm;
+    public Vector3 MeasuredOffsetCm => measuredOffsetCm;
     public float SceneDepth => cube == null ? 0f : cube.transform.position.z;
     public string ConnectionStatus => !running ? "No se pudo abrir UDP 5005" :
         !hasOrigin ? "UDP 5005 · esperando marcador" :
@@ -178,7 +180,7 @@ public sealed class MarcadorDemo : MonoBehaviour
     public void ChangeDepthGain(float amount)
     {
         depthGain = Mathf.Clamp(depthGain + amount, 1f, 40f);
-        if (hasOrigin) targetPosition.z = measuredDepthCm * 0.01f * depthGain;
+        if (hasOrigin) targetPosition.z = measuredOffsetCm.z * 0.01f * depthGain;
     }
 
     private void ReadDepthControls()
@@ -208,6 +210,9 @@ public sealed class MarcadorDemo : MonoBehaviour
         var shader = Shader.Find("Sprites/Default");
         if (shader == null) return;
         guideMaterial = new Material(shader);
+        DrawAxis("X", Vector3.right, new Color(1f, .35f, .35f));
+        DrawAxis("Y", Vector3.up, new Color(.45f, .95f, .45f));
+        DrawAxis("Z", Vector3.forward, new Color(.35f, .7f, 1f));
         // Distance stripes are scene units, not physical measurements.
         for (int z = -60; z <= 120; z += 2) {
             var line = new GameObject("Referencia Z " + z).AddComponent<LineRenderer>();
@@ -227,6 +232,18 @@ public sealed class MarcadorDemo : MonoBehaviour
             line.SetPosition(0, new Vector3(x, -2, -60)); line.SetPosition(1, new Vector3(x, -2, 120));
             line.startColor = line.endColor = new Color(0.15f, 0.38f, 0.48f, 0.7f);
         }
+    }
+
+    private void DrawAxis(string axis, Vector3 direction, Color color)
+    {
+        var line = new GameObject("Eje " + axis).AddComponent<LineRenderer>();
+        line.transform.SetParent(transform);
+        line.sharedMaterial = guideMaterial;
+        line.positionCount = 2;
+        line.SetPosition(0, -direction * 2f);
+        line.SetPosition(1, direction * 2f);
+        line.startWidth = line.endWidth = .035f;
+        line.startColor = line.endColor = color;
     }
 
     private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

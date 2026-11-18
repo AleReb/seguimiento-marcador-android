@@ -37,11 +37,11 @@ También puedes crear marcadores con el [generador ArUco en línea](https://chev
 Imprimir al **100 %**, sin ajustar a página. Comprobar con regla la línea de 100 mm.
 
 - [Tablero ChArUco de calibración](docs/calibracion/hoja-charuco-carta.pdf).
-- [Marcadores ArUco de 2 cm, IDs 0–5](docs/calibracion/marcadores-aruco-2cm-carta.pdf).
-- [Cubo de papel de 2 cm](docs/calibracion/cubo-papel-2cm-carta.pdf).
+- [Marcadores ArUco de 2 cm con margen de 3 mm, IDs 0–5](docs/calibracion/marcadores-aruco-2cm-carta.pdf).
+- [Cubo de seis caras de 26 mm con los ArUcos ya impresos](docs/calibracion/cubo-papel-2cm-carta.pdf).
 - [Cubo de papel de 5 cm](docs/calibracion/cubo-papel-5cm-carta.pdf).
 
-Los cubos son plantillas para recortar y armar; sus caras no incluyen marcadores. Un ArUco de 2 cm necesita margen blanco, por lo que no cabe con ese margen en una cara de cubo de exactamente 2 cm. Puede pegarse en una cara de 5 cm o mantenerse en una superficie plana independiente. La calibración mediante ChArUco sigue siendo una propuesta; su asistente no está implementado.
+Recorta el contorno del cubo por las líneas continuas, dobla por las discontinuas y pega las pestañas con los marcadores hacia afuera. Si usas la hoja de marcadores sueltos, recórtalos por su contorno discontinuo de 26 × 26 mm. Selecciona **2 cm** en la app, que corresponde al cuadrado negro de 20 × 20 mm.
 
 Consulta las [notas de la versión 0.3](docs/version-0.3.md).
 
