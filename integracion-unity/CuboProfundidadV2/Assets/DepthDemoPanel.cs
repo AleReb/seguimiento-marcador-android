@@ -42,10 +42,11 @@ public sealed class DepthDemoPanel : MonoBehaviour
     private void Update()
     {
         if (demo == null || status == null) return;
+        var offset = demo.MeasuredOffsetCm;
         status.text = demo.ConnectionStatus + "\n" +
-            $"Cambio Z medido: {demo.MeasuredDepthCm:+0.0;-0.0;0.0} cm  ·  Ganancia ×{demo.depthGain:0}\n" +
-            $"Z en escena: {demo.SceneDepth:+0.00;-0.00;0.00} u  ·  Cámara: {(demo.followDepth ? "sigue" : "fija")}\n" +
-            "Más ganancia = más recorrido y más ruido.";
+            $"Δ X {offset.x:+0.0;-0.0;0.0}  Y {offset.y:+0.0;-0.0;0.0}  Z {offset.z:+0.0;-0.0;0.0} cm\n" +
+            $"Ganancia XY ×{demo.lateralGain:0}  ·  Z ×{demo.depthGain:0}  ·  Cámara: {(demo.followDepth ? "sigue Z" : "fija")}\n" +
+            "<color=#FF5959>X rojo</color>  ·  <color=#73F273>Y verde</color>  ·  <color=#59B3FF>Z azul</color>";
     }
 
     private RectTransform Rect(string name, Transform parent, float x, float y, float w, float h)

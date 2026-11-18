@@ -17,10 +17,10 @@ El panel superior muestra estado UDP, ID del marcador, cambio de profundidad res
 
 ## Cambios de profundidad
 
-- Ganancia lateral ×3 y de profundidad **×12** por defecto. Un cambio medido de 20 cm en profundidad produce 2,4 unidades de escena, frente a las 0,6 unidades de la versión anterior.
+- Ganancia lateral **×8** y de profundidad **×12** por defecto. Un cambio medido de 10 cm produce 0,8 unidades en X o Y, y 1,2 unidades en Z.
 - Ganancia Z ajustable de ×1 a ×40; teclas `+`/`=` y `−`, o `depthGain` en el Inspector del objeto «Receptor de marcador» durante Play. El valor actual se informa en la consola al cambiarlo. El ajuste durante Play no se guarda al salir.
 - Rejilla de referencias cada 2 unidades entre Z −60 y +120. La línea amarilla marca el origen. Son unidades de escena, no distancias físicas de la pantalla. La rejilla no limita el movimiento del cubo.
-- Cámara en perspectiva oblicua con seguimiento parcial para que el movimiento en Z sea más visible y el cubo no salga tan pronto del encuadre. `C` activa/desactiva ese seguimiento. Con la cámara fija sí puede salir del encuadre.
+- Cámara ortográfica oblicua centrada en el origen, con ejes X rojo, Y verde y Z azul. El seguimiento desplaza la cámara en Z cuando el cubo supera 3 unidades de profundidad a cada lado del origen. `C` alterna el seguimiento y la cámara fija.
 - Suavizado de posición y orientación, con respuesta aproximada de 83 ms, adicional al filtro del celular. La ganancia amplifica también el ruido; bajarla si el cubo tiembla.
 - `R` vuelve a centrar usando la siguiente pose válida. Se admite Input System y el sistema de entrada antiguo.
 

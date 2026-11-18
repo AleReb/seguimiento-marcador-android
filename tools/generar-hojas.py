@@ -65,15 +65,33 @@ c.drawImage(ImageReader(Image.fromarray(image)), letter[0]/2-75*mm, 40*mm, width
 c.setFont('Helvetica', 9)
 c.drawCentredString(letter[0]/2, 32*mm, 'Tablero: 150 x 210 mm. Pegar sobre una base plana y rigida.')
 footer(c); c.save()
-c=page(out/'marcadores-aruco-2cm-carta.pdf', 'Marcadores ArUco de 2 cm (Carta)', 'DICT_4X4_50 | Cuadrado negro: 20 x 20 mm | Seleccionar 2 cm en la app', letter)
+marker_side_mm = 20
+white_margin_mm = 3
+face_side_mm = marker_side_mm + 2 * white_margin_mm
+marker_images = []
+c=page(out/'marcadores-aruco-2cm-carta.pdf', 'Marcadores ArUco de 2 cm (Carta)', 'DICT_4X4_50 | Cuadrado negro: 20 mm | Margen blanco: 3 mm por lado', letter)
 for marker_id in range(6):
     marker=cv2.aruco.generateImageMarker(dictionary,marker_id,400)
-    _, found, _=detector.detectMarkers(np.pad(marker,80,constant_values=255))
+    margin_px = round(marker.shape[0] * white_margin_mm / marker_side_mm)
+    _, found, _=detector.detectMarkers(np.pad(marker, margin_px, constant_values=255))
     assert found is not None and found.flatten().tolist()==[marker_id]
     x=(40+(marker_id%3)*55)*mm; y=(190-(marker_id//3)*65)*mm
-    c.drawImage(ImageReader(Image.fromarray(marker)),x,y,width=20*mm,height=20*mm)
-    c.setFont('Helvetica',10);c.drawCentredString(x+10*mm,y-6*mm,f'ID {marker_id}')
-c.drawCentredString(letter[0]/2,85*mm,'Recortar dejando al menos 5 mm de margen blanco alrededor.')
+    face_side = face_side_mm * mm
+    margin = white_margin_mm * mm
+    c.saveState()
+    c.setStrokeGray(.5)
+    c.setLineWidth(.4)
+    c.setDash(3, 2)
+    c.rect(x, y, face_side, face_side)
+    c.restoreState()
+    marker_image = ImageReader(Image.fromarray(marker))
+    marker_images.append(marker_image)
+    c.drawImage(marker_image, x+margin, y+margin,
+                width=marker_side_mm*mm, height=marker_side_mm*mm)
+    c.setFont('Helvetica',10)
+    c.drawCentredString(x+face_side/2, y-6*mm, f'ID {marker_id}  |  {face_side_mm} x {face_side_mm} mm')
+c.drawCentredString(letter[0]/2,85*mm,'Recortar por la linea discontinua y pegar en la cara del mismo ID.')
+c.drawCentredString(letter[0]/2,78*mm,'Conservar todo el margen blanco. Seleccionar 2 cm en la app.')
 footer(c);c.save()
 
 # A cross-shaped net: one tab for each pair of exterior edges that meet in 3D.
@@ -95,13 +113,27 @@ for face in sorted(faces):
         key=tuple(sorted(ends));seams.setdefault(key,[]).append((face,edge,a,b))
 assert len(seams)==7 and all(len(pair)==2 for pair in seams.values())
 tabs={(pair[0][0],pair[0][1]) for pair in seams.values()}
-for side_cm in (2,5):
-    side=side_cm*10*mm;tab=min(6*mm,side*.18)
-    c=page(out/f'cubo-papel-{side_cm}cm-carta.pdf',f'Cubo de papel - lado {side_cm} cm (Carta)','Linea continua: cortar | Linea discontinua: doblar | Pestanas: pegar',letter)
+for size_label, side_mm in ((2, face_side_mm), (5, 50)):
+    has_markers = size_label == 2
+    side=side_mm*mm;tab=min(6*mm,side*.18)
+    title = (f'Cubo de papel - caras de {side_mm} mm (Carta)' if has_markers
+             else f'Cubo de papel - lado {size_label} cm (Carta)')
+    c=page(out/f'cubo-papel-{size_label}cm-carta.pdf',title,'Linea continua: cortar | Linea discontinua: doblar | Pestanas: pegar',letter)
     ox=(letter[0]-3*side)/2;oy=(letter[1]-4*side)/2-5*mm
-    for face in sorted(faces):
+    if has_markers:
+        c.drawCentredString(letter[0]/2, letter[1]-31*mm,
+                            f'ArUcos ID 0-5 de {marker_side_mm} mm con {white_margin_mm} mm de margen blanco por lado.')
+        c.drawCentredString(letter[0]/2, letter[1]-38*mm,
+                            'Doblar con los marcadores hacia afuera. Seleccionar 2 cm en la app.')
+    for index, face in enumerate(sorted(faces)):
         x,y=face;x0=ox+x*side;y0=oy+y*side
-        c.setFont('Helvetica',8);c.drawCentredString(x0+side/2,y0+side/2,str(sorted(faces).index(face)+1))
+        if has_markers:
+            margin = white_margin_mm * mm
+            c.drawImage(marker_images[index], x0+margin, y0+margin,
+                        width=marker_side_mm*mm, height=marker_side_mm*mm)
+        else:
+            c.setFont('Helvetica',8)
+            c.drawCentredString(x0+side/2, y0+side/2, str(index+1))
         for edge,(dx,dy,a,b) in enumerate([(0,-1,(0,0),(1,0)),(1,0,(1,0),(1,1)),(0,1,(1,1),(0,1)),(-1,0,(0,1),(0,0))]):
             ax=x0+a[0]*side;ay=y0+a[1]*side;bx=x0+b[0]*side;by=y0+b[1]*side
             shared=(x+dx,y+dy) in faces;has_tab=(face,edge) in tabs
@@ -112,4 +144,4 @@ for side_cm in (2,5):
                 p=c.beginPath();p.moveTo(ax,ay);p.lineTo(ax+tx*tab+dx*tab,ay+ty*tab+dy*tab)
                 p.lineTo(bx-tx*tab+dx*tab,by-ty*tab+dy*tab);p.lineTo(bx,by);c.drawPath(p)
     footer(c);c.save()
-print('Letter calibration, 2 cm markers, and 2/5 cm paper cube nets generated.')
+print('Letter calibration, 20 mm markers, and 26/50 mm paper cube nets generated.')
